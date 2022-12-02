@@ -237,9 +237,9 @@
   <div id="notiBackground">
     <div id="notification">
       <h1 style="margin-top: 25px">ALERT!!1!</h1>
-      <p>Sharing is currently unavailable.</p>
-      <button id="confirm" onclick="closeNotification()">ugh</button>
-      <button id="cancel" onclick="closeNotification()">bro come on</button>
+      <p>you may not share this</p>
+      <button id="confirm" onclick="closeNotification()">bro come on</button>
+      <button id="cancel" onclick="closeNotification()">ok</button>
     </div>
 
   </div>
@@ -250,6 +250,8 @@
   </center>
 
   <script>
+  // Most things with comments can be modified.
+  
     var pageName = "Untitled Document"; // SET TO DEFAULT DOC NAME
     var darkTheme = 0; // don't touch
 
@@ -298,6 +300,8 @@
         document.getElementById('activeFont').style.color = "rgb(240, 240, 240)";
         document.getElementById('darkMode').style.backgroundColor = "rgb(100, 100, 100)";
         document.getElementById('modeToggle').innerHTML = "light_mode";
+        var url = new URL("http://butterdogco.com/docs?dark=1");
+        url.searchParams.append('dark', 1);
       } else {
         darkTheme = 0
         document.body.style.backgroundColor = "rgb(248, 248, 248)";
