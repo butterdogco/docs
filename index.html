@@ -159,13 +159,14 @@
     #font #activeFont {
       cursor: pointer;
       color: rgb(130, 130, 130);
+      width: 100px;
     }
 
     #font button {
       border: none;
       background-color: white;
       display: none;
-      width: 90px;
+      width: 100px;
       text-align: center;
       cursor: pointer;
     }
@@ -198,8 +199,8 @@
 
     #darkMode .material-symbols-outlined {
       position: fixed;
-      top: 20px;
-      left: 1224px;
+      top: 21px;
+      right: 117px;
       color: white;
     }
     #notiBackground {
@@ -208,10 +209,11 @@
       margin: none;
       display: none;
       position: fixed;
-      background: rgba(0, 0, 0, 0);
+      background-color: rgba(0, 0, 0, 0);
       z-index: 500;
       transition: 0.2s ease;
       top: 0px;
+      opacity: 1;
     }
   </style>
 </head>
@@ -221,28 +223,27 @@
     <img id="icon"
       src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Google_Docs_logo_%282014-2020%29.svg/1481px-Google_Docs_logo_%282014-2020%29.svg.png">
     <input value="Untitled Document" id="input" type="text">
-    <button id="share" class="share" onclick="shareNotification()"><span
-        class="material-symbols-outlined">people</span>Share</button>
-    <button id="darkMode" onclick="darkMode()"><span class="material-symbols-outlined"
-        id="modeToggle">dark_mode</span></button>
+    <button id="share" class="share" onclick="notification('tank you for yor atention!')"><span class="material-symbols-outlined">people</span>Share</button>
+    <button id="darkMode" onclick="darkMode()"><span class="material-symbols-outlined" id="modeToggle">dark_mode</span></button>
     <div id="textFormatting">
-      <div id="font" onclick="showFonts()">
-        <p id="activeFont">Font</p>
-        <button id="DM-Sans" onclick="dmFont()">DM Sans ✓</button>
-        <button id="Arial" onclick="arialFont()">Arial</button>
+      <div id="font" onclick="fontToggle()">
+        <p id="activeFont">Font: Inter</p>
+        <button id="Inter" onclick="changeFont('Inter')">Inter ✓</button>
+        <button id="Arial" onclick="changeFont('Arial')">Arial</button>
       </div>
     </div>
   </header>
-  <p style="padding: 40px;"></p>
+  
+  <p style="padding: 40px;" id="doc"></p>
   <div id="notiBackground">
     <div id="notification">
-      <h1 style="margin-top: 25px">ALERT!!1!</h1>
-      <p>you may not share this</p>
-      <button id="confirm" onclick="closeNotification()">bro come on</button>
-      <button id="cancel" onclick="closeNotification()">ok</button>
+      <h1 style="margin-top: 25px">ATTENTION!!1!</h1>
+      <p id="alertText">ok</p>
+      <button id="confirm" onclick="closeNotification()">ok</button>
+      <button id="cancel" onclick="closeNotification()">ok but blue</button>
     </div>
-
   </div>
+  
   <center>
     <div onclick="closeFonts()" class="notes" id="notes">
       <textarea type="text" id="mainDoc"></textarea>
@@ -254,20 +255,35 @@
   
     var pageName = "Untitled Document"; // SET TO DEFAULT DOC NAME
     var darkTheme = 0; // don't touch
+    
+    var font = "Inter";
+    var fontSize = "";
 
     document.title = pageName.concat(" - ButterDocs");
-
+    
     function showFonts() {
-      document.getElementById('DM-Sans').style.display = "block";
+      document.getElementById('Inter').style.display = "block";
       document.getElementById('Arial').style.display = "block";
     }
+    
     function closeFonts() {
-      document.getElementById('DM-Sans').style.display = "none";
+      document.getElementById('Inter').style.display = "none";
       document.getElementById('Arial').style.display = "none";
     }
-    function arialFont() {
-      document.style.fontFamily = "'Arial', sans-serif";
+    
+    function fontToggle() {
+      showFonts();
     }
+    
+    function changeFont(fnt) {
+      document.getElementById('mainDoc').style.fontFamily = ''.concat(fnt,', sans-serif');
+      document.getElementById(font).innerHTML = ''.concat(font);
+      document.getElementById(fnt).innerHTML = ''.concat(fnt,' ✓');
+      font = fnt;
+      document.getElementById('activeFont').innerHTML = ''.concat('Font: ',fnt)
+      // alert(''.concat(fnt,', sans-serif'));
+    }
+    
     document.getElementById('input').onkeypress = function (e) {
       if (!e) e = window.event;
       var keyCode = e.code || e.key;
@@ -300,8 +316,6 @@
         document.getElementById('activeFont').style.color = "rgb(240, 240, 240)";
         document.getElementById('darkMode').style.backgroundColor = "rgb(100, 100, 100)";
         document.getElementById('modeToggle').innerHTML = "light_mode";
-        var url = new URL("http://butterdogco.com/docs?dark=1");
-        url.searchParams.append('dark', 1);
       } else {
         darkTheme = 0
         document.body.style.backgroundColor = "rgb(248, 248, 248)";
@@ -318,11 +332,13 @@
       }
     }
 
-    function shareNotification() {
+    function notification(text) {
       document.getElementById('notiBackground').style.display = "block";
       document.getElementById('notification').style.display = "block";
-      document.getElementById('notiBackground').style.background = "rgba(50, 50, 50, 0.5)";
+      document.getElementById('notiBackground').style.backgroundColor = "rgba(50, 50, 50, 0.5)";
+      document.getElementById('alertText').innerHTML = text;
     }
+    
     function closeNotification() {
       if (darkTheme === 1) {
         darkTheme = 0
@@ -337,6 +353,7 @@
         document.getElementById('notiBackground').style.display = "none";
       }
     }
+    
     document.getElementById('mainDoc').addEventListener('keydown', function (e) {
       if (e.key == 'Tab') {
         e.preventDefault();
@@ -352,6 +369,11 @@
           this.selectionEnd = start + 1;
       }
     });
+    
+    window.onerror = function(msg, url, linenumber) {
+      alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+      return true;
+    }
   </script>
 </body>
 
